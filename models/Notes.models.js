@@ -1,4 +1,4 @@
-module.export=mongoose=>{
+module.exports=mongoose=>{
     const Note=mongoose.model('note',mongoose.Schema({
         user:{
             type:mongoose.Types.ObjectId, ref:'User'
