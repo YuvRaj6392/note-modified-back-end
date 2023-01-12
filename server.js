@@ -18,6 +18,12 @@ db.mongoose.connect(db.url,{
   })
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended:true}));
+  require('./routes/Users.routes')(app);
+  app.get('/',(req,res)=>{
+    res.json({
+      message:'Welcome to the page!'
+    })
+  })
   app.listen(8080,()=>{
     console.log('Server is listening to port 8080');
   })
