@@ -9,12 +9,16 @@ exports.signup=(req,res)=>{
 }
 
 
+
+
 //controller for login
 exports.login=(req,res)=>{
     res.json({
         message:'login'
     })
 }
+
+
 
 
 //controller for logout
