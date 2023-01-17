@@ -1,5 +1,7 @@
 const db = require("../models");
 const bcrypt = require("bcrypt");
+const jwt=require('jsonwebtoken');
+const secret="shruv";
 const User = db.users;
 
 //controller for the signup
@@ -35,9 +37,45 @@ exports.signup = (req, res) => {
 
 //controller for login
 exports.login = (req, res) => {
-  res.json({
-    message: "login",
-  });
+  const {email,password}=req.body;
+  User.findOne({email:email}).then(user=>{
+    if(!user)
+    {
+      res.status(400).json({
+        success:false,
+        message:"Please try again with correct initials"
+      })
+    }
+    else
+    {
+      const comparePassword=bcrypt.compareSync(password,user.password);
+      if(!comparePassword)
+      {
+        res.status(400).json({
+          success:false,
+          message:"Please try again with correct initials"
+        })
+      }
+      else
+      {
+        const data=user.id;
+        const jwtToken=jwt.sign(data,secret);
+        res.status(200).json({
+          success:true,
+          message:{
+            id:user.id,
+            token:jwtToken
+          }
+        })
+
+      }
+    }
+  }).catch((err)=>{
+    res.status(500).json({
+      success:false,
+      message:"Internal Server Error!"
+    })
+  })
 };
 
 //controller for logout
