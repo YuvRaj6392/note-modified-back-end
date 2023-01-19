@@ -1,3 +1,4 @@
+
 module.exports=mongoose=>{
     const User=mongoose.model('user',mongoose.Schema({
         name:{type:String,required:true,index:true},

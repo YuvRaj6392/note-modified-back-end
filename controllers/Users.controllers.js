@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const secret = "shruv";
 const User = db.users;
 
+
 //controller for the signup
 exports.signup = (req, res) => {
   User.findOne({ email: req.body.email }, (err, data) => {
