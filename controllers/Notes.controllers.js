@@ -1,7 +1,6 @@
 const db=require('../models');
 const Note=db.notes;
 
-
 //controller to get notes
 exports.getNotes=(req,res)=>{
     res.json({

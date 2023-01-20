@@ -120,3 +120,35 @@ exports.logout = (req, res) => {
     });
   })
 };
+
+
+
+//controller to get all the users from the database(to see who is online and who is not!)
+exports.getAllUsers=(req,res)=>{
+  User.find({},(err,data)=>{
+    if(!data)
+    {
+      return res.status(400).json({
+        success:false,
+        message:"No users were found!"
+      })
+    }
+    res.status(200).json({
+      success:true,
+      message:data
+    })
+    const user=data;
+    for(let i=0;i<user.length;i++)
+    {
+      if(user[i].isLoggedIn)
+      {
+        console.log(`${user[i].name} is online`)
+      }
+      else
+      {
+        console.log(`${user[i].name} is offline`)
+      }
+    }
+    
+  })
+}
