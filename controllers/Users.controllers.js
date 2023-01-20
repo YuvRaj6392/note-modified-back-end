@@ -125,7 +125,7 @@ exports.logout = (req, res) => {
 
 //controller to get all the users from the database(to see who is online and who is not!)
 exports.getAllUsers=(req,res)=>{
-  User.find({},(err,data)=>{
+  User.find({},{name:1,isLoggedIn:1},(err,data)=>{
     if(!data)
     {
       return res.status(400).json({
@@ -138,6 +138,7 @@ exports.getAllUsers=(req,res)=>{
       message:data
     })
     const user=data;
+    console.log(user)
     for(let i=0;i<user.length;i++)
     {
       if(user[i].isLoggedIn)
