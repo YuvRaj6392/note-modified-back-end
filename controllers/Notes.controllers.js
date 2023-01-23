@@ -11,8 +11,22 @@ exports.getNotes=(req,res)=>{
 
 //controller to upload notes
 exports.uploadNotes=(req,res)=>{
-    res.json({
-        message:'upload notes'
+    const note=new Note({
+        user:req.body.user,
+        title:req.body.title,
+        description:req.body.description,
+        tag:req.body.tag
+    })
+    note.save(note).then((user)=>{
+        res.status(201).json({
+            success:true,
+            message:user
+        })
+    }).catch(err=>{
+        res.status(500).json({
+            success:false,
+            message:"Some error occurred!"
+        })
     })
 }
 
