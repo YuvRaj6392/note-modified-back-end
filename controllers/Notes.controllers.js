@@ -3,8 +3,18 @@ const Note=db.notes;
 
 //controller to get notes
 exports.getNotes=(req,res)=>{
-    res.json({
-        message:'get notes'
+    Note.find({user:req.query.user},(err,data)=>{
+        if(!data)
+        {
+            return res.status(404).json({
+                success:false,
+                message:"No notes found from this user"
+            })
+        }
+        res.status(200).json({
+            success:true,
+            message:data
+        })
     })
 }
 
