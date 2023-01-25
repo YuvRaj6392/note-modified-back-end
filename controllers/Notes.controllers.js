@@ -42,9 +42,31 @@ exports.uploadNotes=(req,res)=>{
 
 
 //controller to edit note
-exports.editNotes=(req,res)=>{
-    res.json({
-        message:'edit notes'
+exports.editNotes= async (req,res)=>{
+    const {title,description,tag}=req.body;
+    const newData={};
+    if(title)
+    {
+        newData.title=title
+    }
+    if(description)
+    {
+        newData.description=description
+    }
+    if(tag)
+    {
+        newData.tag=tag;
+    }
+    await Note.findByIdAndUpdate(req.params.id,{$set:newData},{new:true}).then((data)=>{
+        res.status(200).json({
+            success:true,
+            message:data
+        })
+    }).catch(()=>{
+        res.status(500).json({
+            success:false,
+            message:"An error occurred!"
+        })
     })
 }
 
