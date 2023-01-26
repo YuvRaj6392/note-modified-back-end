@@ -72,8 +72,16 @@ exports.editNotes= async (req,res)=>{
 
 
 //controller to delete note
-exports.deleteNotes=(req,res)=>{
-    res.json({
-        message:'delete notes'
+exports.deleteNotes= async(req,res)=>{
+    await Note.findByIdAndRemove(req.params.id).then((data)=>{
+        res.status(200).json({
+            success:true,
+            message:"The note has been successfully deleted!"
+        })
+    }).catch((err)=>{
+        res.status(500).json({
+            success:true,
+            message:"Some error occurred!"
+        })
     })
 }
