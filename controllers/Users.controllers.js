@@ -97,16 +97,10 @@ exports.login = (req, res) => {
 
 //controller for logout
 exports.logout = (req, res) => {
-  if (!req.body.id) {
-    res.status(500).json({
-      success: false,
-      message: "Please provide the userId",
-    });
-    return;
-  }
-  const id=req.body.id;
+  user=req.user
+  
   const update = { isLoggedIn: false };
-  User.findOneAndUpdate({_id: id }, update, {
+  User.findOneAndUpdate({_id:user}, update, {
     userFindAndModify: false,
   }).then(user=>{
     res.status(200).json({
@@ -138,7 +132,7 @@ exports.getAllUsers=(req,res)=>{
       message:data
     })
     const user=data;
-    console.log(user)
+    
     for(let i=0;i<user.length;i++)
     {
       if(user[i].isLoggedIn)

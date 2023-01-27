@@ -14,7 +14,8 @@ if(!token)
 }
 try
 {
-    jwt.verify(token,secret);
+    const data=jwt.verify(token,secret);
+    req.user=data;
     next();
 }
 catch(ex)

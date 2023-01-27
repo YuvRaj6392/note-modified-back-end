@@ -3,7 +3,8 @@ const Note=db.notes;
 
 //controller to get notes
 exports.getNotes=(req,res)=>{
-    Note.find({user:req.query.user},(err,data)=>{
+    user=req.user
+    Note.find({user},(err,data)=>{
         if(!data)
         {
             return res.status(404).json({
@@ -21,8 +22,9 @@ exports.getNotes=(req,res)=>{
 
 //controller to upload notes
 exports.uploadNotes=(req,res)=>{
+    user=req.user
     const note=new Note({
-        user:req.body.user,
+        user:user,
         title:req.body.title,
         description:req.body.description,
         tag:req.body.tag
@@ -43,6 +45,7 @@ exports.uploadNotes=(req,res)=>{
 
 //controller to edit note
 exports.editNotes= async (req,res)=>{
+    user=req.user;
     const {title,description,tag}=req.body;
     const newData={};
     if(title)
@@ -57,7 +60,8 @@ exports.editNotes= async (req,res)=>{
     {
         newData.tag=tag;
     }
-    await Note.findByIdAndUpdate(req.params.id,{$set:newData},{new:true}).then((data)=>{
+    await Note.findOneAndUpdate({_id:req.params.id,user:user},{$set:newData},{new:true}).then((data)=>{
+        
         res.status(200).json({
             success:true,
             message:data
@@ -73,14 +77,16 @@ exports.editNotes= async (req,res)=>{
 
 //controller to delete note
 exports.deleteNotes= async(req,res)=>{
-    await Note.findByIdAndRemove(req.params.id).then((data)=>{
+    user=req.user;
+    
+    await Note.findOneAndDelete({_id:req.params.id,user:user}).then((data)=>{
         res.status(200).json({
             success:true,
-            message:"The note has been successfully deleted!"
+            message:data
         })
     }).catch((err)=>{
         res.status(500).json({
-            success:true,
+            success:false,
             message:"Some error occurred!"
         })
     })
