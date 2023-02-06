@@ -47,7 +47,7 @@ exports.login = (req, res) => {
       if (!user) {
         res.status(400).json({
           success: false,
-          message: "Please try again with correct initials",
+          message: "Please try again with correct credentials",
         });
       } else {
         const comparePassword = bcrypt.compareSync(password, user.password);
