@@ -16,7 +16,7 @@ exports.signup = (req, res) => {
         email: req.body.email,
         name: req.body.name,
         password: hash,
-        isLoggedIn: false,
+        isLoggedIn: 'Offline',
       })
         .then((user) => {
           res.status(200).json({
@@ -57,7 +57,7 @@ exports.login = (req, res) => {
             message: "Please try again with correct initials",
           });
         } else {
-          const update = { isLoggedIn: true };
+          const update = { isLoggedIn: 'Online' };
           User.findOneAndUpdate({ email: email }, update, {
             userFindAndModify: false,
           }).then((user) => {
@@ -99,7 +99,7 @@ exports.login = (req, res) => {
 exports.logout = (req, res) => {
   user=req.user
   
-  const update = { isLoggedIn: false };
+  const update = { isLoggedIn: 'Offline' };
   User.findOneAndUpdate({_id:user}, update, {
     userFindAndModify: false,
   }).then(user=>{
@@ -131,19 +131,7 @@ exports.getAllUsers=(req,res)=>{
       success:true,
       message:data
     })
-    const user=data;
     
-    for(let i=0;i<user.length;i++)
-    {
-      if(user[i].isLoggedIn)
-      {
-        console.log(`${user[i].name} is online`)
-      }
-      else
-      {
-        console.log(`${user[i].name} is offline`)
-      }
-    }
     
   })
 }
